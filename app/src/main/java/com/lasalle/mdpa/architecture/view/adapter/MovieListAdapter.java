@@ -31,7 +31,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     }
 
     private final Context context;
-    private final List<Movie> values;
+    private List<Movie> values;
 
     public MovieListAdapter(Context context, List<Movie> values) {
         this.context = context;
@@ -60,6 +60,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public int getItemCount() {
         return values.size();
+    }
+
+    public void setValues(List<Movie> values) {
+        this.values = values;
     }
 
 }

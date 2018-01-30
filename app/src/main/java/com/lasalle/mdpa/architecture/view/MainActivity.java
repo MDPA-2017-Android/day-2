@@ -10,9 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.lasalle.mdpa.architecture.R;
+import com.lasalle.mdpa.architecture.model.Movie;
 import com.lasalle.mdpa.architecture.view.adapter.MovieListAdapter;
 import com.lasalle.mdpa.architecture.view.model.LibraryViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,12 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
         libraryViewModel.setResources(getResources());
 
-        libraryViewModel.getMovieTitleList().observe(this, movieTitleList -> {
-            RecyclerView movieRecyclerView = (RecyclerView) findViewById(R.id.movie_list);
+        RecyclerView movieRecyclerView = (RecyclerView) findViewById(R.id.movie_list);
+        MovieListAdapter movieListAdapter = new MovieListAdapter(this, new ArrayList<Movie>());
+        movieRecyclerView.setAdapter(movieListAdapter);
+        movieRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            MovieListAdapter adapter = new MovieListAdapter(this, movieTitleList);
-            movieRecyclerView.setAdapter(adapter);
-            movieRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        libraryViewModel.getMovieTitleList().observe(this, movieTitleList -> {
+            movieListAdapter.setValues(movieTitleList);
+            movieListAdapter.notifyDataSetChanged();
         });
 
         libraryViewModel.getTvShowTitleList().observe(this, tvShowList -> {
