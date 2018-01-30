@@ -17,6 +17,11 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
     private final Context context;
     private final List<Movie> values;
 
+    static class ViewHolder {
+        TextView title;
+        TextView extraInfo;
+    }
+
     public MovieListAdapter(Context context, List<Movie> values) {
         super(context, -1, values);
 
@@ -26,17 +31,27 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.movie_layout, parent, false);
+        View rowView = convertView;
+        if(rowView == null)
+        {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = inflater.inflate(R.layout.movie_layout, parent, false);
 
-        TextView titleText = (TextView) rowView.findViewById(R.id.title);
-        TextView extraInfoText = (TextView) rowView.findViewById(R.id.extra_info);
+            ViewHolder viewHolder = new ViewHolder();
+            viewHolder.title = (TextView) rowView.findViewById(R.id.title);
+            viewHolder.extraInfo = (TextView) rowView.findViewById(R.id.extra_info);
+
+            rowView.setTag(viewHolder);
+        }
+
+
+        ViewHolder holder = (ViewHolder) rowView.getTag();
 
         Movie movie = values.get(position);
-        titleText.setText(movie.getTitle());
+        holder.title.setText(movie.getTitle());
 
-        extraInfoText.setText(movie.getDirector() + " - " + Integer.toString(movie.getReleaseYear()));
+        holder.extraInfo.setText(movie.getDirector() + " - " + Integer.toString(movie.getReleaseYear()));
 
         return rowView;
     }
