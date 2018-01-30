@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.lasalle.mdpa.architecture.R;
+import com.lasalle.mdpa.architecture.view.adapter.MovieListAdapter;
 import com.lasalle.mdpa.architecture.view.model.LibraryViewModel;
 
 import java.util.List;
@@ -26,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
         libraryViewModel.getMovieTitleList().observe(this, movieTitleList -> {
             ListView movieListView = (ListView) findViewById(R.id.movie_list);
-            populateListView(movieListView, movieTitleList);
+
+            MovieListAdapter adapter = new MovieListAdapter(this, movieTitleList);
+            movieListView.setAdapter(adapter);
         });
 
         libraryViewModel.getTvShowTitleList().observe(this, tvShowList -> {

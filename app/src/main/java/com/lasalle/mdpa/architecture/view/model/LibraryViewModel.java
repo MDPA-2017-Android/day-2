@@ -16,7 +16,7 @@ public class LibraryViewModel extends ViewModel {
 
     private LibraryManager libraryManager = new LibraryManager();
 
-    private MutableLiveData<List<String>> movieTitleList;
+    private MutableLiveData<List<Movie>> movieTitleList;
     private MutableLiveData<List<String>> tvShowTitleList;
 
     public void setResources(Resources resources)
@@ -24,7 +24,7 @@ public class LibraryViewModel extends ViewModel {
         libraryManager.setResources(resources);
     }
 
-    public LiveData<List<String>> getMovieTitleList() {
+    public LiveData<List<Movie>> getMovieTitleList() {
         if(movieTitleList == null) {
             movieTitleList = new MutableLiveData<>();
             populateMovieList();
@@ -44,13 +44,7 @@ public class LibraryViewModel extends ViewModel {
 
     private void populateMovieList() {
         List<Movie> movieList = libraryManager.getMovieList();
-
-        List<String> titleList = new ArrayList<>();
-        for (Movie m : movieList) {
-            titleList.add(m.getTitle());
-        }
-
-        movieTitleList.setValue(titleList);
+        movieTitleList.setValue(movieList);
     }
 
     private void populateTvShowList() {
