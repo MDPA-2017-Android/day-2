@@ -1,6 +1,7 @@
 package com.lasalle.mdpa.architecture.view.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,48 +13,53 @@ import com.lasalle.mdpa.architecture.model.Movie;
 
 import java.util.List;
 
-public class MovieListAdapter extends ArrayAdapter<Movie> {
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
+
+    public class ViewHolder extends RecyclerView.ViewHolder
+    {
+        public TextView title;
+        public TextView extraInfo;
+
+        public ViewHolder(View itemView)
+        {
+            super(itemView);
+
+            title = (TextView) itemView.findViewById(R.id.title);
+            extraInfo = (TextView) itemView.findViewById(R.id.extra_info);
+
+        }
+    }
 
     private final Context context;
     private final List<Movie> values;
 
-    static class ViewHolder {
-        TextView title;
-        TextView extraInfo;
-    }
-
     public MovieListAdapter(Context context, List<Movie> values) {
-        super(context, -1, values);
-
         this.context = context;
         this.values = values;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
-        if(rowView == null)
-        {
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.movie_layout, parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
 
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.title = (TextView) rowView.findViewById(R.id.title);
-            viewHolder.extraInfo = (TextView) rowView.findViewById(R.id.extra_info);
+        View contactView = inflater.inflate(R.layout.movie_layout, parent, false);
 
-            rowView.setTag(viewHolder);
-        }
+        ViewHolder viewHolder = new ViewHolder(contactView);
+        return viewHolder;
+    }
 
-
-        ViewHolder holder = (ViewHolder) rowView.getTag();
-
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
         Movie movie = values.get(position);
+
         holder.title.setText(movie.getTitle());
-
         holder.extraInfo.setText(movie.getDirector() + " - " + Integer.toString(movie.getReleaseYear()));
+    }
 
-        return rowView;
+    @Override
+    public int getItemCount() {
+        return values.size();
     }
 
 }

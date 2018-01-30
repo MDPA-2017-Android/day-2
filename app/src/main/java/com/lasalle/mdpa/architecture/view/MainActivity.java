@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -26,10 +28,11 @@ public class MainActivity extends AppCompatActivity {
         libraryViewModel.setResources(getResources());
 
         libraryViewModel.getMovieTitleList().observe(this, movieTitleList -> {
-            ListView movieListView = (ListView) findViewById(R.id.movie_list);
+            RecyclerView movieRecyclerView = (RecyclerView) findViewById(R.id.movie_list);
 
             MovieListAdapter adapter = new MovieListAdapter(this, movieTitleList);
-            movieListView.setAdapter(adapter);
+            movieRecyclerView.setAdapter(adapter);
+            movieRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         });
 
         libraryViewModel.getTvShowTitleList().observe(this, tvShowList -> {
